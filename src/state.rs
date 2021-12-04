@@ -1,6 +1,7 @@
 use solana_program::{
     program_pack::{IsInitialized, Pack, Sealed},
-    pubkey::Pubkey
+    pubkey::Pubkey,
+    program_error::ProgramError,
 };
 
 use arrayref::{array_mut_ref, array_ref, array_refs, mut_array_refs};
@@ -26,7 +27,7 @@ impl Pack for Escrow {
 
     const LEN: usize = 105;
     fn unpack_from_slice(src: &[u8]) -> Result<Self, ProgramError> {
-        let src = array_ref![src, 0, Escrow:LEN];
+        let src = array_ref![src, 0, Escrow::LEN];
         let (
             is_initialized,
             initializer_pubkey,

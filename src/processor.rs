@@ -1,11 +1,11 @@
 use solana_program::{
-    account_info::AccountInfo,
+    account_info::{next_account_info, AccountInfo},
     entrypoint::ProgramResult,
     program_error::ProgramError,
     msg,
     pubkey::Pubkey,
     program_pack::{Pack, IsInitialized},
-    sysvar::{rent::Rent, Sysvar}
+    sysvar::{rent::Rent, Sysvar},
     program::invoke
 };
 
@@ -53,7 +53,7 @@ impl Processor {
 
         let mut escrow_info = Escrow::unpack_unchecked(&escrow_account.try_borrow_data()?)?;
         if escrow_info.is_initialized() {
-            reutrn Err(ProgramError::AccountAlreadyInitialized);
+            return Err(ProgramError::AccountAlreadyInitialized);
         }
         
         escrow_info.is_initialized = true;
@@ -65,7 +65,7 @@ impl Processor {
         Escrow::pack(escrow_info, &mut escrow_account.try_borrow_mut_data()?)?;
         let (pda, _bump_seed) = Pubkey::find_program_address(&[b"escrow"], program_id);
 
-        et token_program = next_account_info(account_info_iter)?;
+        let token_program = next_account_info(account_info_iter)?;
 
 
         let owner_change_ix = spl_token::instruction::set_authority(
