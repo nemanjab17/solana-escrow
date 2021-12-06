@@ -20,6 +20,10 @@ pub enum EscrowInstruction {
         /// The amount party A expects to receive of token Y
         amount: u64
     }
+
+    FinalizeEscrow {
+        amount: u64
+    }
 }
 
 
@@ -30,6 +34,9 @@ impl EscrowInstruction {
 
         Ok(match tag {
             0 => Self::InitEscrow {
+                amount: Self::unpack_amount(rest)?,
+            },
+            1 => Self::FinalizeEscrow {
                 amount: Self::unpack_amount(rest)?,
             },
             _ => return Err(InvalidInstruction.into()),

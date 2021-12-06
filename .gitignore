@@ -2,4 +2,6 @@
 /*.so
 /target/
 
-test-ledger/
+/test-ledger/
+
+keys
